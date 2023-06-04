@@ -33,6 +33,14 @@ function draw() {
     branch(baseBranchLen, angle); // Draw the tree
     pop(); // Restore the state of transformation
   }
+
+  // Draw seven smaller trees in the center
+  for(let i = 0; i < 7; i++) {
+    push(); // Save the current state of transformation
+    rotate(i * 360 / 7); // Rotate to draw each tree in a different direction
+    branch(baseBranchLen * 0.25, angle); // Draw the tree
+    pop(); // Restore the state of transformation
+  }
 }
 
 function branch(len, angle) {
@@ -60,4 +68,3 @@ function branch(len, angle) {
     pop(); // Restore the state of transformation
   }
 }
-
