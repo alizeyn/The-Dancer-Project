@@ -1,0 +1,45 @@
+let padding = 50;
+let bigSquareSize = 600;
+let smallSquareSize = 10;
+let smallSquarePadding = 8; // New padding for small squares
+let mic;
+
+function setup() {
+  createCanvas(730, 730);
+  colorMode(HSB, 180); // Use HSB color space
+  background(0);
+  noiseDetail(8, 0.5);
+
+  // Create an Audio input
+  mic = new p5.AudioIn();
+
+  // Start the Audio Input.
+  mic.start();
+}
+
+function draw() {
+  background(0); // Clear the background each frame to avoid overlap
+  translate(padding, padding);
+
+  // Get the overall volume (between 0 and 1.0)
+  let vol = mic.getLevel() * 10; // Amplify the volume for a more dramatic effect
+  let offset = frameCount * 0.01; // Add a changing offset over time
+
+  // Use the volume to change the direction of the Perlin noise
+  let volDirection = map(vol, 0, 100, 0, TWO_PI);
+
+  for (let x = 0; x < bigSquareSize; x += smallSquareSize + smallSquarePadding) {
+    for (let y = 0; y < bigSquareSize; y += smallSquareSize + smallSquarePadding) {
+      let noiseValue = noise((x + cos(volDirection) * vol * 200) * 0.01 + offset, 
+                             (y + sin(volDirection) * vol * 200) * 0.01 + offset);
+
+      let hueValue = map(noiseValue, 0, 1, 0, 255); // Map noise value to a hue
+      let saturationValue = map(vol, 0, 10, 100, 255); // Map volume to saturation
+      let brightnessValue = map(vol, 0, 100, 150, 255); // Map volume^2 to brightness
+
+      fill(hueValue, saturationValue, brightnessValue);
+
+      rect(x, y, smallSquareSize, smallSquareSize, smallSquareSize / 4);
+    }
+  }
+}
