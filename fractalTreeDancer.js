@@ -7,7 +7,7 @@ function setup() {
   createCanvas(800, 800);
   mic = new p5.AudioIn();
   mic.start();
-  fft = new p5.FFT();
+  fft = new p5.FFT(0.9, 128);
   fft.setInput(mic);
   angleMode(DEGREES);
   bgColor = color(64, 224, 208);
